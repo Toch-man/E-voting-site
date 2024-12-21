@@ -1,0 +1,111 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+body {
+}
+.voterForm {
+  background-color: beige;
+  padding: 30px;
+  height: 300px;
+  width: 100%;
+}
+.voterInput {
+  margin: 20px;
+}
+.button {
+  background-color: red;
+  border-style: solid;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+.votingPage {
+  border-style: solid;
+  border-radius: 10px;
+  width: 1000px;
+  height: 600px;
+  background-color: rgb(19, 5, 32);
+}
+.navBar {
+  float: left;
+  background-color: red;
+  color: white;
+  width: 250px;
+  height: 400px;
+  padding-top: 20px;
+}
+li {
+  margin-top: 40px;
+  list-style-type: none;
+}
+li:hover {
+  background-color: whitesmoke;
+  color: black;
+  border-style: solid;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-right-style: none;
+}
+.candidateDetails {
+  background-color: whitesmoke;
+  padding-top: 50px;
+  height: 400px;
+  width: 900px;
+  border-style: solid;
+  border-radius: 10px;
+}
+h1 {
+  margin: 40px;
+}
+.dialogBox {
+  background-color: white;
+  height: 150px;
+  width: 300px;
+  position: absolute;
+  top: 200px;
+  right: 500px;
+  font-size: 8px;
+  text-align: center;
+  border-style: outset;
+  border-color: black;
+  border-radius: 10px;
+}
+.lowOpacity {
+  border-style: solid;
+  border-radius: 10px;
+  width: 1000px;
+  height: 600px;
+  position: relative;
+  background-color: blueviolet;
+  opacity: 0.2;
+}
+.dialogButton {
+  float: right;
+  background-color: red;
+  color: white;
+  width: 50px;
+  height: 35px;
+  font-size: 15px;
+  text-align: center;
+  border-top-right-radius: 10%;
+}
+.dialogBox2 {
+  background-color: white;
+  height: 200px;
+  width: 400px;
+  position: absolute;
+  top: 200px;
+  right: 500px;
+  font-size: 8px;
+  text-align: center;
+  border-style: outset;
+  border-color: black;
+  border-radius: 10px;
+}
