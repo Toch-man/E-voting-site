@@ -59,7 +59,9 @@ function HomePage({ Vote, Admin }) {
             VOTE
           </button>
         </div>
-        <div className="div3"></div>
+        <div className="div3">
+          <img src="vote.jpg" alt="voting" className="homeLogo2"></img>
+        </div>
       </div>
     </div>
   );

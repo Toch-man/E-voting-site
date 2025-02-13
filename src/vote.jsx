@@ -55,6 +55,12 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
   if (eligibilty === "" || eligibilty === "notAllowed") {
     return (
       <div className="voterForm">
+        <h1 className="heading">
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <div className="dynasty">DYNASTY E-VOTING</div>
+          </div>
+        </h1>
         <button className="button" onClick={handleHomePage}>
           {" "}
           back
@@ -123,7 +129,12 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
   if (eligibilty === "vote" && voted == false) {
     return (
       <div className="votingPage">
-        {" "}
+        <h1 className="heading">
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <div className="dynasty">DYNASTY E-VOTING</div>
+          </div>
+        </h1>
         <div className="div21">
           <button
             className="navButton"
@@ -149,9 +160,19 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             </ul>
           </div>
           <div className="candidateDetails">
-            {candidate[activeCandidateId].name}
+            <p
+              style={{
+                fontSize: "50px",
+                marginBottom: "5px",
+                marginTop: "5px",
+                color: " #ecae56",
+              }}
+            >
+              {" "}
+              <b>{candidate[activeCandidateId].name}</b>
+            </p>
             <br />
-            {candidate[activeCandidateId].party}
+            From <b>{candidate[activeCandidateId].party}</b> Party
             <br />
             <img
               className="president"
@@ -176,7 +197,12 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
     return (
       <>
         <div className="lowOpacity">
-          {" "}
+          <h1 className="heading">
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <img className="logo" src="voting-logo.jpg" alt="logo" />
+              <div className="dynasty">DYNASTY E-VOTING</div>
+            </div>
+          </h1>
           <div className="div21">
             <button
               className="navButton"
@@ -202,9 +228,18 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
               </ul>
             </div>
             <div className="candidateDetails">
-              {candidate[activeCandidateId].name}
+              <p
+                style={{
+                  fontSize: "50px",
+                  marginBottom: "5px",
+                  marginTop: "5px",
+                  color: " #ecae56",
+                }}
+              >
+                <b>{candidate[activeCandidateId].name}</b>
+              </p>
               <br />
-              {candidate[activeCandidateId].party}
+              From <b>{candidate[activeCandidateId].party}</b> Party
               <br />
               <img
                 className="president"

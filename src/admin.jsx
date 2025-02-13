@@ -75,12 +75,14 @@ export default function AdminPage({
     return (
       <div className="voterForm">
         <h1 className="heading">
-          <button className="navButton" onClick={handleHomePage}>
-            ---
-          </button>
-          <div className="dynasty">DYNASTY E-VOTING</div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <div className="dynasty">DYNASTY E-VOTING</div>
+          </div>
         </h1>
-
+        <button onClick={handleHomePage} className="navButton">
+          back
+        </button>
         <img className="logo" src="voting-logo.jpg" alt="logo" />
         <h1>Enter Admin ID</h1>
         <form onSubmit={handleCheckAdminStatus}>
@@ -101,21 +103,27 @@ export default function AdminPage({
     if (electionStatus === "ongoing" && !newForm) {
       return (
         <div className="votingPage">
+          <h1 className="heading">
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <img className="logo" src="voting-logo.jpg" alt="logo" />
+              <div className="dynasty">DYNASTY E-VOTING</div>
+            </div>
+          </h1>
+          <button
+            className="navButton"
+            onClick={() => {
+              if (!newElection) {
+                setVerifiedAdmin(false);
+              } else {
+                setNewForm(true);
+                setNewElection(false);
+              }
+            }}
+          >
+            {" "}
+            back
+          </button>{" "}
           <div className="div21">
-            <button
-              className="navButton"
-              onClick={() => {
-                if (!newElection) {
-                  setVerifiedAdmin(false);
-                } else {
-                  setNewForm(true);
-                  setNewElection(false);
-                }
-              }}
-            >
-              {" "}
-              back
-            </button>{" "}
             <div className="VotingStats">
               <img className="logo" src="voting-logo.jpg" alt="logo" />
               <h1> VOTING STATS</h1>
@@ -138,11 +146,20 @@ export default function AdminPage({
             </div>
             <section>
               <p className="candidateDetails">
-                {candidate[activeCandidateId].name}
+                <p
+                  style={{
+                    fontSize: "50px",
+                    marginBottom: "5px",
+                    marginTop: "5px",
+                    color: " #ecae56",
+                  }}
+                >
+                  <b> {candidate[activeCandidateId].name}</b>
+                </p>
                 <br />
-                {candidate[activeCandidateId].party}
+                From <b> {candidate[activeCandidateId].party}</b> Party
                 <br />
-                {candidate[activeCandidateId].vote}
+                No of Vote: {candidate[activeCandidateId].vote}
                 <br />
                 <img
                   className="president"
@@ -162,7 +179,12 @@ export default function AdminPage({
       return (
         <>
           <div className="lowOpacity">
-            {" "}
+            <h1 className="heading">
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <img className="logo" src="voting-logo.jpg" alt="logo" />
+                <div className="dynasty">DYNASTY E-VOTING</div>
+              </div>
+            </h1>
             <div className="div21">
               <div className="VotingStats">
                 <img className="logo" src="voting-logo.jpg" alt="logo" />
@@ -185,11 +207,20 @@ export default function AdminPage({
                 </ul>
               </div>
               <p className="candidateDetails">
-                {candidate[activeCandidateId].name}
+                <p
+                  style={{
+                    fontSize: "50px",
+                    marginBottom: "5px",
+                    marginTop: "5px",
+                    color: " #ecae56",
+                  }}
+                >
+                  <b> {candidate[activeCandidateId].name}</b>
+                </p>
                 <br />
-                {candidate[activeCandidateId].party}
+                From <b>{candidate[activeCandidateId].party}</b> Party
                 <br />
-                {candidate[activeCandidateId].vote}
+                No of Vote : {candidate[activeCandidateId].vote}
                 <br />
                 <img
                   className="president"
@@ -226,6 +257,12 @@ export default function AdminPage({
     } else if (newElection || !newForm) {
       return (
         <div className="votingPage">
+          <h1 className="heading">
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <img className="logo" src="voting-logo.jpg" alt="logo" />
+              <div className="dynasty">DYNASTY E-VOTING</div>
+            </div>
+          </h1>
           <div className="div21">
             <div className="VotingStats">
               <img className="logo" src="voting-logo.jpg" alt="logo" />
@@ -248,11 +285,20 @@ export default function AdminPage({
               </ul>
             </div>
             <div className="candidateDetails">
-              {candidate[activeCandidateId].name}
+              <p
+                style={{
+                  fontSize: "50px",
+                  marginBottom: "5px",
+                  marginTop: "5px",
+                  color: " #ecae56",
+                }}
+              >
+                <b>{candidate[activeCandidateId].name}</b>
+              </p>
               <br />
-              {candidate[activeCandidateId].party}
+              From {candidate[activeCandidateId].party} Party
               <br />
-              {candidate[activeCandidateId].vote}
+              No of Vote :{candidate[activeCandidateId].vote}
               <br />
               <img
                 className="president"
@@ -279,6 +325,12 @@ export default function AdminPage({
     } else if (newForm) {
       return (
         <div className="candidateForm">
+          <h1 className="heading">
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <img className="logo" src="voting-logo.jpg" alt="logo" />
+              <div className="dynasty">DYNASTY E-VOTING</div>
+            </div>
+          </h1>
           <button className="button" onClick={() => setNewElection(true)}>
             back
           </button>
