@@ -20,22 +20,6 @@ function HomePage({ Vote, Admin }) {
             {" "}
             ADMIN
           </button>
-          <button
-            className="Adbutton"
-            style={{ backgroundColor: "#ecae56" }}
-            onClick={Admin}
-          >
-            {" "}
-            ADMIN
-          </button>
-          <button
-            className="Adbutton"
-            style={{ backgroundColor: "#ecae56" }}
-            onClick={Admin}
-          >
-            {" "}
-            ADMIN
-          </button>
         </div>
       </h1>
       <div className="homePage">
@@ -63,6 +47,131 @@ function HomePage({ Vote, Admin }) {
           <img src="vote.jpg" alt="voting" className="homeLogo2"></img>
         </div>
       </div>
+      <div className="votingGuide">hello world</div>
+      <div className="imageSlide">john doe</div>
+      <footer className="footer">
+        <div className="upperFoot">
+          <div className="footer1">
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <br></br>
+            <span
+              className="footerP"
+              style={{
+                color: "white",
+                fontSize: "20px",
+                fontStyle: "italic",
+                fontWeight: "bolder",
+              }}
+            >
+              The royal road to luxury
+            </span>
+          </div>
+          <div className="footer2">
+            <h1
+              style={{
+                color: "white",
+                fontSize: "20px",
+                fontStyle: "italic",
+                fontWeight: "bolder",
+              }}
+            >
+              SPONSORS
+            </h1>
+            <div className="sponsors">
+              <div style={{ marginRight: "40px" }}>
+                <p>
+                  <img
+                    src="flutterwave.png"
+                    alt="flutter"
+                    style={{ height: "30px", width: "150px", margin: "10px" }}
+                  ></img>
+                </p>
+                <p>
+                  <img
+                    src="interswitch.png"
+                    alt="interswitch"
+                    style={{ height: "30px", width: "150px", margin: "10px" }}
+                  ></img>
+                </p>
+              </div>
+              <div style={{ marginRight: "40px" }}>
+                {" "}
+                <p>
+                  <img
+                    src="andela.png"
+                    alt="andela"
+                    style={{
+                      height: "30px",
+                      width: "150px",
+                      margin: "10px",
+                      filter: "invert(100%)",
+                    }}
+                  ></img>
+                </p>
+                <p>
+                  <img
+                    src="fintech.png"
+                    alt="fintechs"
+                    style={{ height: "30px", width: "150px", margin: "10px" }}
+                  ></img>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <img
+                    src="flutterwave.png"
+                    alt="flutter"
+                    style={{ height: "30px", width: "150px", margin: "10px" }}
+                  ></img>
+                </p>
+                <p>
+                  <img
+                    src="interswitch.png"
+                    alt="interswitch"
+                    style={{ height: "30px", width: "150px", margin: "10px" }}
+                  ></img>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="footer3">
+            <a href="">About us</a>
+            <a href="">Privacy policy</a>
+            <a href="">Services</a>
+          </div>
+        </div>
+        <div className="lowerFoot">
+          <div className="socialIcon">
+            <a className="footerP">
+              <img src="facebook.png" alt="facebook" className="socials"></img>
+            </a>
+            <a className="footerP">
+              <img src="twitter.png" alt="x" className="socials"></img>
+            </a>
+            <a className="footerP">
+              <img src="whatsapp.png" alt="whatsapp" className="socials"></img>
+            </a>
+            <a className="footerP">
+              <img
+                src="instagram.png"
+                alt="instagram"
+                className="socials"
+              ></img>
+            </a>
+          </div>
+          <p
+            style={{
+              color: "white",
+              fontSize: "20px",
+              fontStyle: "italic",
+              fontWeight: "bolder",
+            }}
+          >
+            {" "}
+            @Copyright All right reserved{" "}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -107,8 +216,16 @@ export default function App() {
   ]);
   const [userStatus, setUserStatus] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [electionStatus, setElectionStatus] = useState("ongoing");
   const newCandidates = useRef([]);
 
+  function onChangeElectionStatus() {
+    if (electionStatus === "ongoing") {
+      setElectionStatus("ended");
+    } else if (electionStatus === "ended") {
+      setElectionStatus("ongoing");
+    }
+  }
   function onVote(i) {
     let voted = candidate.map((c, j) => {
       if (i === j) {
@@ -158,6 +275,7 @@ export default function App() {
   if (userStatus === "vote") {
     return (
       <Vote
+        electionStatus={electionStatus}
         candidate={candidate}
         handleVote={onVote}
         handleHomePage={onHomePage}
@@ -167,6 +285,8 @@ export default function App() {
   if (userStatus === "admin") {
     return (
       <AdminPage
+        electionStatus={electionStatus}
+        handleElectionStatus={onChangeElectionStatus}
         candidate={candidate}
         handleHomePage={onHomePage}
         handleChangeCandidate={onChangeCandidate}

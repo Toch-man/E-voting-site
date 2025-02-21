@@ -1,5 +1,7 @@
 import { useState } from "react";
 export default function AdminPage({
+  electionStatus,
+  handleElectionStatus,
   candidate,
   handleHomePage,
   handleChangeCandidate,
@@ -16,7 +18,6 @@ export default function AdminPage({
   });
   const [verifiedAdmin, setVerifiedAdmin] = useState(false);
   const [adminID, setadminID] = useState("");
-  const [electionStatus, setElectionStatus] = useState("ongoing");
   const [winnerId, setWinnerId] = useState(null);
   const [activeCandidateId, setActiveCandidateId] = useState(0);
   const [newElection, setNewElection] = useState(false);
@@ -35,7 +36,7 @@ export default function AdminPage({
     setCandidateDetails({ ...candidateDetails, image: e.target.value });
   }
 
-  function handleElectionStatus() {
+  function handleElectionWinner() {
     for (let i = 0; i < candidate.length - 1; i++) {
       for (let j = i + 1; j < candidate.length; j++) {
         if (candidate[i].vote > candidate[j].vote) {
@@ -46,7 +47,7 @@ export default function AdminPage({
       }
     }
     setWinnerId(candidate.length - 1);
-    setElectionStatus("ended");
+    handleElectionStatus();
     setActiveCandidateId(0);
   }
 
@@ -125,7 +126,6 @@ export default function AdminPage({
           </button>{" "}
           <div className="div21">
             <div className="VotingStats">
-              <img className="logo" src="voting-logo.jpg" alt="logo" />
               <h1> VOTING STATS</h1>
             </div>
           </div>
@@ -145,8 +145,8 @@ export default function AdminPage({
               </ul>
             </div>
             <section>
-              <p className="candidateDetails">
-                <p
+              <div className="candidateDetails">
+                <h1
                   style={{
                     fontSize: "50px",
                     marginBottom: "5px",
@@ -155,7 +155,7 @@ export default function AdminPage({
                   }}
                 >
                   <b> {candidate[activeCandidateId].name}</b>
-                </p>
+                </h1>
                 <br />
                 From <b> {candidate[activeCandidateId].party}</b> Party
                 <br />
@@ -166,10 +166,10 @@ export default function AdminPage({
                   src={candidate[activeCandidateId].image}
                 ></img>
                 <br />
-                <button className="button" onClick={handleElectionStatus}>
+                <button className="button" onClick={handleElectionWinner}>
                   End Election
                 </button>
-              </p>
+              </div>
             </section>
           </div>
         </div>
@@ -206,8 +206,8 @@ export default function AdminPage({
                   ))}
                 </ul>
               </div>
-              <p className="candidateDetails">
-                <p
+              <div className="candidateDetails">
+                <h1
                   style={{
                     fontSize: "50px",
                     marginBottom: "5px",
@@ -216,7 +216,7 @@ export default function AdminPage({
                   }}
                 >
                   <b> {candidate[activeCandidateId].name}</b>
-                </p>
+                </h1>
                 <br />
                 From <b>{candidate[activeCandidateId].party}</b> Party
                 <br />
@@ -227,10 +227,14 @@ export default function AdminPage({
                   src={candidate[activeCandidateId].image}
                 ></img>
                 <br />
-                <button className="button" onClick={handleElectionStatus}>
+                <button
+                  className="button"
+                  onClick={handleElectionWinner}
+                  disabled={true}
+                >
                   End Election
                 </button>
-              </p>
+              </div>
             </div>
           </div>
           <div className="dialogBox">
@@ -285,7 +289,7 @@ export default function AdminPage({
               </ul>
             </div>
             <div className="candidateDetails">
-              <p
+              <h1
                 style={{
                   fontSize: "50px",
                   marginBottom: "5px",
@@ -294,7 +298,7 @@ export default function AdminPage({
                 }}
               >
                 <b>{candidate[activeCandidateId].name}</b>
-              </p>
+              </h1>
               <br />
               From {candidate[activeCandidateId].party} Party
               <br />
@@ -387,7 +391,7 @@ export default function AdminPage({
               onClick={(e) => {
                 e.preventDefault();
                 handleChangeCandidate();
-                setElectionStatus("ongoing");
+                handleElectionStatus;
                 setWinnerId(null);
                 setActiveCandidateId(0);
                 setNewForm(false);

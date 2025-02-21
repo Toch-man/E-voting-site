@@ -1,5 +1,10 @@
 import { useState } from "react";
-export default function Vote({ candidate, handleVote, handleHomePage }) {
+export default function Vote({
+  candidate,
+  handleVote,
+  handleHomePage,
+  electionStatus,
+}) {
   const [voterDetails, setVoterDetails] = useState({
     firstName: "",
     lastName: "",
@@ -9,20 +14,17 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
   const [eligibilty, setEligibilityStatus] = useState("");
   const [activeCandidateId, setActiveCandidateId] = useState(0);
   const [voted, setVoted] = useState(false);
-  function handleFirstName(e) {
-    setVoterDetails({ ...voterDetails, firstName: e.target.value });
+  const [errorMessage, setErrorMessage] = useState("");
+  function handleInputChange(e) {
+    setVoterDetails({ ...voterDetails, [e.target.name]: e.target.value });
   }
-  function handleLastName(e) {
-    setVoterDetails({ ...voterDetails, lastName: e.target.value });
-  }
-  function handleVoterId(e) {
-    setVoterDetails({ ...voterDetails, voterId: e.target.value });
-  }
-  function handleAge(e) {
-    setVoterDetails({ ...voterDetails, age: e.target.value });
+  function isVoterIdUsed(voterId) {
+    const storedvotersId = JSON.parse(localStorage.getItem("voterIds")) || [];
+    return storedvotersId.includes(voterId);
   }
   function handleVoterDetails(e) {
     e.preventDefault();
+    const { voterId, age } = voterDetails;
     let validilityStatus = true;
     let details = [
       voterDetails.firstName,
@@ -37,11 +39,25 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
         continue;
       }
     }
-    if (voterDetails.age < 18 || !validilityStatus) {
+    if (age < 18) {
+      setErrorMessage("❌ Sorry Not old enough to vote");
       setEligibilityStatus("notAllowed");
-    } else {
-      setEligibilityStatus("vote");
+      return;
     }
+    if (!validilityStatus) {
+      setEligibilityStatus("notAllowed");
+      setErrorMessage("❌ please fill all fields.");
+      return;
+    }
+    if (isVoterIdUsed(voterId)) {
+      setErrorMessage("❌ This Voter ID has already been used.");
+      setEligibilityStatus("notAllowed");
+      return;
+    }
+    const storedvotersId = JSON.parse(localStorage.getItem("voterIds")) || [];
+    storedvotersId.push(voterId);
+    localStorage.setItem("voterIds", JSON.stringify(voterId));
+    setEligibilityStatus("vote");
     setVoterDetails({ firstName: "", lastName: "", voterId: "", age: "" });
   }
   function handleActiveState(i) {
@@ -74,7 +90,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             type="textarea"
             name="firstName"
             value={voterDetails.firstName}
-            onChange={handleFirstName}
+            onChange={handleInputChange}
           ></input>
           Lastname:
           <input
@@ -82,7 +98,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             type="textarea"
             name="lastName"
             value={voterDetails.lastName}
-            onChange={handleLastName}
+            onChange={handleInputChange}
           ></input>
           <br />
           VoterId
@@ -91,7 +107,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             type="textarea"
             name="voterId"
             value={voterDetails.voterId}
-            onChange={handleVoterId}
+            onChange={handleInputChange}
           ></input>
           Age:
           <input
@@ -99,17 +115,17 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             type="number"
             name="age"
             value={voterDetails.age}
-            onChange={handleAge}
+            onChange={handleInputChange}
           ></input>{" "}
           <p
             style={
               eligibilty === "notAllowed"
-                ? { color: "red", display: "block" }
+                ? { color: "green", display: "block" }
                 : { display: "none" }
             }
           >
             {" "}
-            sorry you arent old enough to vote or invalid details
+            {`${errorMessage}`}
           </p>
           <br />
           Gender:
@@ -126,7 +142,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
       </div>
     );
   }
-  if (eligibilty === "vote" && voted == false) {
+  if (eligibilty === "vote" && voted == false && electionStatus === "ongoing") {
     return (
       <div className="votingPage">
         <h1 className="heading">
@@ -144,7 +160,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             back
           </button>
           <div className="VotingStats">
-            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            {/* <img className="logo" src="voting-logo.jpg" alt="logo" /> */}
             <h1> VOTING STATS</h1>
           </div>
         </div>
@@ -192,6 +208,25 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
         </div>
       </div>
     );
+  } else if (electionStatus === "ongoing") {
+    <div>
+      <h1 className="heading">
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <img className="logo" src="voting-logo.jpg" alt="logo" />
+          <div className="dynasty">DYNASTY E-VOTING</div>
+        </div>
+      </h1>
+      <div className="div21">
+        <button className="navButton" onClick={() => setEligibilityStatus("")}>
+          {" "}
+          back
+        </button>
+        <div className="VotingStats">
+          {/* <img className="logo" src="voting-logo.jpg" alt="logo" /> */}
+          <h1> VOTING STATS</h1>
+        </div>
+      </div>
+    </div>;
   }
   if (voted) {
     return (
@@ -207,6 +242,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
             <button
               className="navButton"
               onClick={() => setEligibilityStatus("")}
+              disabled={true}
             >
               {" "}
               back
@@ -252,6 +288,7 @@ export default function Vote({ candidate, handleVote, handleHomePage }) {
                   setVoted(true);
                   handleVote(activeCandidateId);
                 }}
+                disabled={true}
               >
                 VOTE
               </button>
