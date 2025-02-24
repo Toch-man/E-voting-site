@@ -19,7 +19,7 @@ export default function Vote({
     setVoterDetails({ ...voterDetails, [e.target.name]: e.target.value });
   }
   function isVoterIdUsed(voterId) {
-    const storedvotersId = JSON.parse(localStorage.getItem("voterIds")) || [];
+    const storedvotersId = JSON.parse(localStorage.getItem("voteIds")) || [];
     return storedvotersId.includes(voterId);
   }
   function handleVoterDetails(e) {
@@ -54,9 +54,10 @@ export default function Vote({
       setEligibilityStatus("notAllowed");
       return;
     }
-    const storedvotersId = JSON.parse(localStorage.getItem("voterIds")) || [];
+    const storedvotersId = JSON.parse(localStorage.getItem("voteIds")) || [];
+    console.log(typeof storedvotersId);
     storedvotersId.push(voterId);
-    localStorage.setItem("voterIds", JSON.stringify(voterId));
+    localStorage.setItem("voteIds", JSON.stringify(storedvotersId));
     setEligibilityStatus("vote");
     setVoterDetails({ firstName: "", lastName: "", voterId: "", age: "" });
   }

@@ -232,10 +232,12 @@ export default function App() {
         return { ...c, vote: c.vote + 1 };
       } else return c;
     });
-    setCandidate(voted);
+    let updatedV;
+    localStorage.setItem("updatedVotes", JSON.stringify(voted));
+    updatedV = JSON.parse(localStorage.getItem("updatedVotes"));
+    setCandidate(updatedV);
   }
   function onChangeCandidate() {
-    console.log(disabled);
     setCandidate(newCandidates.current);
     newCandidates.current = [];
     setDisabled(false);
@@ -287,7 +289,9 @@ export default function App() {
       <AdminPage
         electionStatus={electionStatus}
         handleElectionStatus={onChangeElectionStatus}
-        candidate={candidate}
+        candidate={
+          JSON.parse(localStorage.getItem("updatedVotes")) || candidate
+        }
         handleHomePage={onHomePage}
         handleChangeCandidate={onChangeCandidate}
         handleAddCandidate={onAddCandidate}
