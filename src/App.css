@@ -62,14 +62,18 @@ body {
   text-align: center;
   padding-top: 50px;
   font-size: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .votingGuide {
   height: 180px;
   width: 100%;
-  background-color: rgb(109, 106, 106);
+  background-color: rgb(168, 166, 166);
   text-align: center;
   padding-top: 50px;
-  font-size: 60px;
+  padding-bottom: 10px;
+  font-size: 20px;
 }
 .footer {
   background-color: rgb(14, 13, 13);
@@ -141,6 +145,15 @@ a {
   flex-wrap: nowrap;
   margin-right: 0px;
   justify-content: right;
+}
+.stepsNav {
+  width: 50px;
+  height: 50px;
+  margin: 20px;
+  background-color: #10082d;
+  color: white;
+  border-style: solid;
+  border-radius: 50%;
 }
 
 .Votebutton {

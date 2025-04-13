@@ -7,13 +7,14 @@ export default function AdminPage({
   handleChangeCandidate,
   handleAddCandidate,
   handleDeleteCandidate,
+  handleSortCandiates,
   disable,
 }) {
   const [candidateDetails, setCandidateDetails] = useState({
     name: "",
     party: "",
     id: "",
-    image: "",
+    image: null,
     vote: 0,
   });
   const [verifiedAdmin, setVerifiedAdmin] = useState(false);
@@ -32,21 +33,26 @@ export default function AdminPage({
   function handleCandidateParty(e) {
     setCandidateDetails({ ...candidateDetails, party: e.target.value });
   }
-  function handleCandidateImage(e) {
-    setCandidateDetails({ ...candidateDetails, image: e.target.value });
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+    console.log(file.name);
+    setCandidateDetails({ ...candidateDetails, image: file.name });
   }
 
   function handleElectionWinner() {
-    for (let i = 0; i < candidate.length - 1; i++) {
-      for (let j = i + 1; j < candidate.length; j++) {
-        if (candidate[i].vote > candidate[j].vote) {
-          let swap = candidate[i];
-          candidate[i] = candidate[j];
-          candidate[j] = swap;
+    let sortedCandidate = [...candidate];
+    for (let i = 0; i < sortedCandidate.length - 1; i++) {
+      for (let j = i + 1; j < sortedCandidate.length; j++) {
+        if (sortedCandidate[i].vote > sortedCandidate[j].vote) {
+          let swap = sortedCandidate[i];
+          sortedCandidate[i] = sortedCandidate[j];
+          sortedCandidate[j] = swap;
         }
       }
+      i;
     }
-    setWinnerId(candidate.length - 1);
+    setWinnerId(sortedCandidate.length - 1);
+    handleSortCandiates(sortedCandidate);
     handleElectionStatus();
     setActiveCandidateId(0);
   }
@@ -72,6 +78,7 @@ export default function AdminPage({
     setNewElection(false);
     setNewForm(false);
   }
+
   if (!verifiedAdmin) {
     return (
       <div className="voterForm">
@@ -101,7 +108,7 @@ export default function AdminPage({
     );
   }
   if (verifiedAdmin) {
-    if (electionStatus === "ongoing" && !newForm) {
+    if (electionStatus === "ongoing" && !newForm && !winnerId) {
       return (
         <div className="votingPage">
           <h1 className="heading">
@@ -298,6 +305,7 @@ export default function AdminPage({
                 }}
               >
                 <b>{candidate[activeCandidateId].name}</b>
+                {candidate[activeCandidateId].name}
               </h1>
               <br />
               From {candidate[activeCandidateId].party} Party
@@ -314,7 +322,7 @@ export default function AdminPage({
                 onClick={() => {
                   setNewForm(true);
                   setNewElection(false);
-                  handleDeleteCandidate;
+                  handleElectionStatus();
                 }}
               >
                 Commence new ELection
@@ -365,11 +373,10 @@ export default function AdminPage({
             ></input>
             Candidate Image:
             <input
-              onChange={handleCandidateImage}
-              value={candidateDetails.image}
-              className="candidateInput"
-              type="textarea"
-            ></input>
+              type="file"
+              onChange={handleFileChange}
+              name={candidate.image}
+            />
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -378,7 +385,7 @@ export default function AdminPage({
                   name: "",
                   party: "",
                   id: "",
-                  image: "",
+                  image: null,
                   vote: 0,
                 });
               }}
@@ -390,8 +397,8 @@ export default function AdminPage({
             <button
               onClick={(e) => {
                 e.preventDefault();
+                handleDeleteCandidate();
                 handleChangeCandidate();
-                handleElectionStatus;
                 setWinnerId(null);
                 setActiveCandidateId(0);
                 setNewForm(false);
@@ -400,9 +407,10 @@ export default function AdminPage({
                   name: "",
                   party: "",
                   id: "",
-                  image: "",
+                  image: null,
                   vote: 0,
                 });
+                localStorage.removeItem("voteIds");
               }}
               className="button"
               disabled={disable ? false : true}

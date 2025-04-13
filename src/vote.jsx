@@ -22,6 +22,12 @@ export default function Vote({
     const storedvotersId = JSON.parse(localStorage.getItem("voteIds")) || [];
     return storedvotersId.includes(voterId);
   }
+  function isVoterIdValid(voterId) {
+    let voter = voterId.slice(0, 5).toLowerCase();
+    if (voter == "voter") {
+      return true;
+    } else return false;
+  }
   function handleVoterDetails(e) {
     e.preventDefault();
     const { voterId, age } = voterDetails;
@@ -38,6 +44,9 @@ export default function Vote({
       } else {
         continue;
       }
+    }
+    if (!isVoterIdValid) {
+      setErrorMessage("❌ voter id is invalid");
     }
     if (age < 18) {
       setErrorMessage("❌ Sorry Not old enough to vote");
@@ -56,8 +65,10 @@ export default function Vote({
     }
     const storedvotersId = JSON.parse(localStorage.getItem("voteIds")) || [];
     console.log(typeof storedvotersId);
-    storedvotersId.push(voterId);
-    localStorage.setItem("voteIds", JSON.stringify(storedvotersId));
+    if (electionStatus === "ongoing") {
+      storedvotersId.push(voterId);
+      localStorage.setItem("voteIds", JSON.stringify(storedvotersId));
+    }
     setEligibilityStatus("vote");
     setVoterDetails({ firstName: "", lastName: "", voterId: "", age: "" });
   }
@@ -70,6 +81,9 @@ export default function Vote({
     setActiveCandidateId(0);
   }
   if (eligibilty === "" || eligibilty === "notAllowed") {
+    if (electionStatus === "ended") {
+      localStorage.removeItem("voteIds");
+    }
     return (
       <div className="voterForm">
         <h1 className="heading">
@@ -143,6 +157,42 @@ export default function Vote({
       </div>
     );
   }
+  if (electionStatus === "ended") {
+    return (
+      <div>
+        <h1 className="heading">
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <div className="dynasty">DYNASTY E-VOTING</div>
+          </div>
+        </h1>
+        <div className="div21">
+          <button
+            className="navButton"
+            onClick={() => setEligibilityStatus("")}
+          >
+            {" "}
+            back
+          </button>
+          <div className="VotingStats">
+            {/* <img className="logo" src="voting-logo.jpg" alt="logo" /> */}
+            <h1> VOTING STATS</h1>
+          </div>
+        </div>
+        <div
+          className="candidateDetails"
+          style={{
+            fontSize: "30px",
+            color: "white",
+          }}
+        >
+          {" "}
+          OOPS! VOTING SESSION HAS BEEN ENDED Result to be announced publicly
+          soon
+        </div>
+      </div>
+    );
+  }
   if (eligibilty === "vote" && voted == false && electionStatus === "ongoing") {
     return (
       <div className="votingPage">
@@ -209,25 +259,6 @@ export default function Vote({
         </div>
       </div>
     );
-  } else if (electionStatus === "ongoing") {
-    <div>
-      <h1 className="heading">
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <img className="logo" src="voting-logo.jpg" alt="logo" />
-          <div className="dynasty">DYNASTY E-VOTING</div>
-        </div>
-      </h1>
-      <div className="div21">
-        <button className="navButton" onClick={() => setEligibilityStatus("")}>
-          {" "}
-          back
-        </button>
-        <div className="VotingStats">
-          {/* <img className="logo" src="voting-logo.jpg" alt="logo" /> */}
-          <h1> VOTING STATS</h1>
-        </div>
-      </div>
-    </div>;
   }
   if (voted) {
     return (

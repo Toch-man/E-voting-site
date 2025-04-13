@@ -4,6 +4,13 @@ import AdminPage from "./admin";
 import Vote from "./vote";
 
 function HomePage({ Vote, Admin }) {
+  const [stepIndex, setStepIndex] = useState(0);
+  const steps = [
+    "Click on the Vote Button",
+    "Fill in the form with valid details",
+    "Select your candidate in the navigation bar",
+    "Click the vote button and log out",
+  ];
   return (
     <div>
       <h1 className="heading">
@@ -47,8 +54,39 @@ function HomePage({ Vote, Admin }) {
           <img src="vote.jpg" alt="voting" className="homeLogo2"></img>
         </div>
       </div>
-      <div className="votingGuide">hello world</div>
-      <div className="imageSlide">john doe</div>
+      <div className="votingGuide">
+        "Voting is not just a right; it's a privilege and a responsibility.
+        <br />
+        Within our society, every decision we make shapes our collective future.
+        <br />
+        When you cast your vote, you are not just selecting a leader or a<br />
+        policy—you are choosing the direction of our community, the values we
+        <br />
+        uphold, and the progress we strive for. True change begins with
+        <br />
+        participation, and every voice matters. Stand up, be heard, and take
+        <br />
+        part in shaping the future of our organization!"
+        <br />
+      </div>
+      <div className="imageSlide">
+        <button
+          disabled={stepIndex == 0 ? true : false}
+          onClick={() => setStepIndex(stepIndex - 1)}
+          className="stepsNav"
+        >
+          {" "}
+          &lt;
+        </button>
+        <>{steps[stepIndex]}</>
+        <button
+          disabled={stepIndex == 3 ? true : false}
+          onClick={() => setStepIndex(stepIndex + 1)}
+          className="stepsNav"
+        >
+          &gt;
+        </button>
+      </div>
       <footer className="footer">
         <div className="upperFoot">
           <div className="footer1">
@@ -135,9 +173,19 @@ function HomePage({ Vote, Admin }) {
             </div>
           </div>
           <div className="footer3">
-            <a href="">About us</a>
-            <a href="">Privacy policy</a>
-            <a href="">Services</a>
+            <img className="logo" src="voting-logo.jpg" alt="logo" />
+            <br></br>
+            <span
+              className="footerP"
+              style={{
+                color: "white",
+                fontSize: "20px",
+                fontStyle: "italic",
+                fontWeight: "bolder",
+              }}
+            >
+              The royal road to luxury
+            </span>
           </div>
         </div>
         <div className="lowerFoot">
@@ -190,7 +238,7 @@ export default function App() {
       party: "adc",
       image: "president2.jpg",
       id: 1,
-      vote: 3,
+      vote: 0,
     },
     {
       name: "Samuel jackson",
@@ -218,6 +266,7 @@ export default function App() {
   const [disabled, setDisabled] = useState(false);
   const [electionStatus, setElectionStatus] = useState("ongoing");
   const newCandidates = useRef([]);
+  let updatedV;
 
   function onChangeElectionStatus() {
     if (electionStatus === "ongoing") {
@@ -226,25 +275,33 @@ export default function App() {
       setElectionStatus("ongoing");
     }
   }
+
   function onVote(i) {
     let voted = candidate.map((c, j) => {
       if (i === j) {
         return { ...c, vote: c.vote + 1 };
       } else return c;
     });
-    let updatedV;
+
     localStorage.setItem("updatedVotes", JSON.stringify(voted));
     updatedV = JSON.parse(localStorage.getItem("updatedVotes"));
     setCandidate(updatedV);
   }
   function onChangeCandidate() {
-    setCandidate(newCandidates.current);
+    localStorage.setItem("updatedVotes", JSON.stringify(newCandidates.current));
+    updatedV = JSON.parse(localStorage.getItem("updatedVotes"));
+    setCandidate(updatedV);
     newCandidates.current = [];
     setDisabled(false);
   }
   function onAddCandidate(candidateInfo) {
     let validilityStatus = true;
-    let details = [candidateInfo.name, candidateInfo.party, candidateInfo.id];
+    let details = [
+      candidateInfo.name,
+      candidateInfo.party,
+      candidateInfo.id,
+      candidateInfo.image,
+    ];
     for (let i = 0; i < details.length; i++) {
       if (details[i] === "") {
         validilityStatus = false;
@@ -259,15 +316,21 @@ export default function App() {
       }
     }
   }
+  function onSortCandidate(sortedCandidate) {
+    setCandidate(sortedCandidate);
+    localStorage.setItem("updatedVotes", JSON.stringify(sortedCandidate));
+  }
+  function onDeleteCandidate() {
+    setCandidate(newCandidates.current);
+    localStorage.removeItem("updatedVotes");
+  }
   function handleUserVote() {
     setUserStatus("vote");
   }
   function handleUserAdmin() {
     setUserStatus("admin");
   }
-  function onDeleteCandidate() {
-    setCandidate(newCandidates.current);
-  }
+
   function onHomePage() {
     setUserStatus("");
   }
@@ -293,6 +356,7 @@ export default function App() {
           JSON.parse(localStorage.getItem("updatedVotes")) || candidate
         }
         handleHomePage={onHomePage}
+        handleSortCandiates={onSortCandidate}
         handleChangeCandidate={onChangeCandidate}
         handleAddCandidate={onAddCandidate}
         handleDeleteCandidate={onDeleteCandidate}
